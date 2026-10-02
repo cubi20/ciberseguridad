@@ -8,3 +8,10 @@ Trabajos de la diplomatura en Ciberseguridad (Coderhouse).
 - [Reporte (Word)](pre-entrega-1/Reporte_CIA_Idoyaga_Molina_Agustin.docx)
 
 Inventario de 3 activos digitales, análisis bajo la tríada CIA y matriz de riesgo inicial con una vulnerabilidad y una amenaza por activo.
+
+## Pre-entrega 2: Reporte Técnico de Configuración de Laboratorio
+
+- [Reporte (PDF)](pre-entrega-2/Reporte_Laboratorio_Idoyaga_Molina_Agustin.pdf)
+- [Reporte con capturas](pre-entrega-2/)
+
+Máquina virtual Ubuntu en VirtualBox con red NAT, usuario estándar para las prácticas, sistema actualizado, firewall activo y snapshot inicial.
