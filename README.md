@@ -15,3 +15,10 @@ Inventario de 3 activos digitales, análisis bajo la tríada CIA y matriz de rie
 - [Reporte con capturas](pre-entrega-2/)
 
 Máquina virtual Ubuntu en VirtualBox con red NAT, usuario estándar para las prácticas, sistema actualizado, firewall activo y snapshot inicial.
+
+## Pre-entrega 3: Reporte de Análisis de Tráfico
+
+- [Reporte (PDF)](pre-entrega-3/Reporte_Trafico_Idoyaga_Molina_Agustin.pdf)
+- [Reporte con capturas](pre-entrega-3/)
+
+Captura y análisis de tráfico con Wireshark: inventario de protocolos, protocolos seguros e inseguros, DNS, HTTP, HTTPS y Three-Way Handshake.
