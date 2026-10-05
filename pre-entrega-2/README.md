@@ -16,7 +16,7 @@
 | Red de la VM | NAT |
 | Usuarios | `vboxuser` (administrador) y `practicas` (estándar, sin privilegios) |
 | Firewall | UFW activo |
-| Snapshot | `Clean Install - Hardening applied` |
+| Snapshot | `Hardening Inicial` |
 
 Elegí Ubuntu porque Linux es el sistema más usado en ciberseguridad. Como mi Mac tiene un procesador ARM (Apple Silicon), usé la imagen **ARM64** de Ubuntu: las imágenes para Intel/AMD (`amd64`) no pueden ejecutarse en VirtualBox sobre este chip.
 
@@ -71,7 +71,7 @@ Separé la cuenta de administración de la cuenta de trabajo:
 
 ![Creación del usuario practicas, permisos y firewall en la terminal](capturas/05-usuario-permisos-firewall.png)
 
-*Figura 5. Creación del usuario `practicas`, prueba de permisos con `ls -l` y activación del firewall.*
+*Figura 5. Creación del usuario `practicas` y activación del firewall, con la cuenta administradora. También se ve una primera prueba de `ls -l` hecha con `vboxuser`, que después repetí con `practicas` (Figura 9).*
 
 ![Panel de usuarios con vboxuser y Practicas](capturas/06-usuarios.png)
 
@@ -93,22 +93,28 @@ En la configuración de la cuenta `Practicas`, el interruptor **Administrator** 
 
 ### 3.1 Permisos de archivos
 
-Creé un archivo de prueba y revisé sus permisos (Figura 5):
+La primera prueba la había hecho con `vboxuser` (Figura 5), y por eso el archivo quedaba a nombre del administrador. La repetí con la cuenta `practicas`, que es la que uso para los ejercicios (Figura 9):
 
 ```
+$ whoami
+practicas
 $ echo "hola" > prueba.txt
 $ ls -l prueba.txt
--rw-rw-r-- 1 vboxuser vboxuser 5 Oct  2 01:30 prueba.txt
+-rw-rw-r-- 1 practicas practicas 5 Oct  5 23:32 prueba.txt
 ```
+
+![Archivo de prueba creado con la cuenta practicas](capturas/09-permisos-practicas.png)
+
+*Figura 9. `whoami` confirma la cuenta `practicas`, y `ls -l` muestra que el archivo le pertenece a ella.*
 
 | Parte | Valor | Significado |
 |---|---|---|
 | Tipo | `-` | Archivo común (una `d` indicaría un directorio) |
-| Dueño | `rw-` | `vboxuser` puede leer y escribir |
-| Grupo | `rw-` | Los miembros del grupo `vboxuser` pueden leer y escribir |
+| Dueño | `rw-` | `practicas` puede leer y escribir |
+| Grupo | `rw-` | Los miembros del grupo `practicas` (en Ubuntu, cada cuenta tiene su propio grupo) pueden leer y escribir |
 | Otros | `r--` | El resto de los usuarios solo podría leerlo |
 
-El resto de la línea indica la cantidad de enlaces (`1`), el dueño y el grupo (`vboxuser vboxuser`), el tamaño en bytes (`5`: "hola" más el salto de línea) y la fecha de modificación. Ningún grupo tiene permiso de ejecución (`x`), porque es un archivo de texto. Si fuera un archivo sensible, con `chmod 600 prueba.txt` lo dejaría accesible solo para su dueño.
+El resto de la línea indica la cantidad de enlaces (`1`), el dueño y el grupo (`practicas practicas`), el tamaño en bytes (`5`: "hola" más el salto de línea) y la fecha de modificación. Ningún grupo tiene permiso de ejecución (`x`), porque es un archivo de texto. Si fuera un archivo sensible, con `chmod 600 prueba.txt` lo dejaría accesible solo para su dueño. Como lo creé con `practicas`, el dueño es la cuenta de trabajo y no la administradora: los archivos de las prácticas quedan separados de la administración del sistema.
 
 ### 3.2 Gestión de paquetes desde la terminal
 
@@ -129,11 +135,11 @@ Con su política por defecto, UFW **bloquea todas las conexiones entrantes** y p
 
 ## 4. La red de seguridad: snapshot inicial
 
-Con la máquina virtual apagada, tomé una instantánea desde *Instantáneas → Tomar* con el nombre **`Clean Install - Hardening applied`** (Figura 9).
+Con la máquina virtual apagada, tomé una instantánea desde *Instantáneas → Tomar* con el nombre **`Hardening Inicial`** (Figura 10).
 
-![Lista de instantáneas de VirtualBox](capturas/09-snapshot.png)
+![Lista de instantáneas de VirtualBox](capturas/10-snapshot.png)
 
-*Figura 9. Instantánea "Clean Install - Hardening applied" con la VM apagada.*
+*Figura 10. Instantánea "Hardening Inicial" con la VM apagada.*
 
 **Por qué es importante:** el snapshot guarda el estado completo del disco en este momento: sistema limpio, actualizado y con el hardening aplicado. Si un ejercicio rompe algo, si pruebo una herramienta que resulta peligrosa o si cambio una configuración por error, con *Restaurar* vuelvo a este punto en segundos, sin reinstalar. La tomé con la VM apagada para que el estado guardado sea consistente, sin procesos a medio ejecutar.
 
@@ -155,6 +161,6 @@ En el próximo módulo voy a usar esta máquina para capturar y analizar tráfic
 | Red en modo NAT o Red Interna, con explicación | Sección 1, Figura 1 |
 | Usuario estándar separado del administrador | Sección 2.2, Figuras 6, 7 y 8 |
 | Evidencia de sistema actualizado | Sección 2.1, Figuras 2, 3 y 4 |
-| Permisos de un archivo con `ls -l` | Sección 3.1, Figura 5 |
+| Permisos de un archivo con `ls -l` | Sección 3.1, Figura 9 |
 | Búsqueda de actualizaciones con `sudo apt update` | Secciones 2.1 y 3.2 |
-| Snapshot "Clean Install - Hardening applied" | Sección 4, Figura 9 |
+| Snapshot "Hardening Inicial" | Sección 4, Figura 10 |
